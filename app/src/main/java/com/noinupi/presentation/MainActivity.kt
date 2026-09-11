@@ -7,8 +7,6 @@ import android.net.Uri
 import android.os.Bundle
 import android.widget.Toast
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.offset
-
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -114,6 +112,12 @@ class MainActivity : ComponentActivity() {
         emptyList<Transaction>()
     )
 
+    private var currentBalance by mutableStateOf<String?>(null)
+
+    private var scannedUpi by mutableStateOf("")
+    private var scannedAmount by mutableStateOf("")
+    private var paymentResetKey by mutableStateOf(0)
+
     private val prefs by lazy {
         getSharedPreferences(
             "noinupi_prefs",
@@ -146,6 +150,8 @@ class MainActivity : ComponentActivity() {
         engine = UssdEngine(this)
         actionRunner = ActionRunner(engine)
 
+        currentBalance = prefs.getString("balance", null)
+
         setContent {
 
             MaterialTheme {
@@ -164,10 +170,12 @@ class MainActivity : ComponentActivity() {
                         "home" -> {
 
                             PayScreen(
-                                savedBalance = prefs.getString(
-                                    "balance",
-                                    null
-                                ),
+                                scannedUpi = scannedUpi,
+                                scannedAmount = scannedAmount,
+                                paymentResetKey = paymentResetKey,
+
+                                savedBalance = currentBalance,
+
                                 savedReceiveUpi = prefs.getString(
                                     "receive_upi",
                                     ""
@@ -266,6 +274,9 @@ class MainActivity : ComponentActivity() {
 
                             ScannerScreen(
                                 onResult = { upi, amount ->
+
+                                    scannedUpi = upi
+                                    scannedAmount = amount
 
                                     UssdSessionStore.vpa = upi
                                     UssdSessionStore.amount = amount
@@ -370,6 +381,15 @@ class MainActivity : ComponentActivity() {
 
                             transactions = transactionStore.getAll()
 
+                            UssdSessionStore.vpa = ""
+                            UssdSessionStore.amount = ""
+
+                            scannedUpi = ""
+                            scannedAmount = ""
+                            paymentResetKey++
+
+
+
                             Toast.makeText(
                                 this@MainActivity,
                                 "Payment complete",
@@ -461,6 +481,8 @@ class MainActivity : ComponentActivity() {
                                     )
                                     .apply()
 
+                                currentBalance = balance
+
                                 Toast.makeText(
                                     this@MainActivity,
                                     "Balance updated",
@@ -530,6 +552,9 @@ object UssdSessionStore {
 
 @Composable
 fun PayScreen(
+    scannedUpi: String,
+    scannedAmount: String,
+    paymentResetKey: Int,
     savedBalance: String?,
     savedReceiveUpi: String,
     balanceTime: Long,
@@ -541,12 +566,12 @@ fun PayScreen(
     transactions: List<Transaction>
 ) {
 
-    var upiId by remember {
-        mutableStateOf("")
+    var upiId by remember(paymentResetKey, scannedUpi) {
+        mutableStateOf(scannedUpi)
     }
 
-    var amount by remember {
-        mutableStateOf("")
+    var amount by remember(paymentResetKey, scannedUpi, scannedAmount) {
+        mutableStateOf(scannedAmount)
     }
 
     val lastChecked =
@@ -965,7 +990,8 @@ fun ReceiveScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(TerminalBg)
-            .padding(18.dp)
+            .padding(18.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         Row(
@@ -1045,7 +1071,9 @@ fun ReceiveScreen(
         if (value.isNotBlank()) {
 
             val bitmap = remember(value) {
-                generateQrBitmap(value)
+                generateQrBitmap(
+                    "upi://pay?pa=${Uri.encode(value)}&cu=INR"
+                )
             }
 
             if (bitmap != null) {
@@ -1090,11 +1118,11 @@ fun ScannerScreen(
                 scanQrFromImage(
                     context,
                     uri
-                ) { value ->
+                ) { upi, amount ->
 
                     onResult(
-                        value,
-                        ""
+                        upi,
+                        amount
                     )
                 }
             }
@@ -1107,13 +1135,13 @@ fun ScannerScreen(
     if (showCamera) {
 
         CameraScannerScreen(
-            onResult = { value ->
+            onResult = { upi, amount ->
 
                 showCamera = false
 
                 onResult(
-                    value,
-                    ""
+                    upi,
+                    amount
                 )
             },
             onBack = {
@@ -1185,7 +1213,7 @@ fun ScannerScreen(
 
 @Composable
 fun CameraScannerScreen(
-    onResult: (String) -> Unit,
+    onResult: (String, String) -> Unit,
     onBack: () -> Unit
 ) {
 
@@ -1327,7 +1355,18 @@ fun CameraScannerScreen(
                                         ?.rawValue
 
                                 if (!raw.isNullOrBlank()) {
-                                    onResult(raw)
+
+                                    val parsed = parseUpiQr(raw)
+
+                                    if (parsed != null) {
+
+                                        cameraProvider.unbindAll()
+
+                                        onResult(
+                                            parsed.first,
+                                            parsed.second
+                                        )
+                                    }
                                 }
                             }
                             .addOnCompleteListener {
@@ -1391,31 +1430,27 @@ fun TerminalButton(
 // ============================================================
 
 fun generateQrBitmap(text: String): Bitmap? {
-
     return try {
-
-        val writer =
-            com.google.zxing.qrcode.QRCodeWriter()
+        val size = 600
 
         val matrix =
-            writer.encode(
-                text,
-                com.google.zxing.BarcodeFormat.QR_CODE,
-                512,
-                512
-            )
+            com.google.zxing.qrcode.QRCodeWriter()
+                .encode(
+                    text,
+                    com.google.zxing.BarcodeFormat.QR_CODE,
+                    size,
+                    size
+                )
 
         val bitmap =
             Bitmap.createBitmap(
-                512,
-                512,
+                size,
+                size,
                 Bitmap.Config.ARGB_8888
             )
 
-        for (x in 0 until 512) {
-
-            for (y in 0 until 512) {
-
+        for (x in 0 until size) {
+            for (y in 0 until size) {
                 bitmap.setPixel(
                     x,
                     y,
@@ -1431,7 +1466,6 @@ fun generateQrBitmap(text: String): Bitmap? {
         bitmap
 
     } catch (e: Exception) {
-
         null
     }
 }
@@ -1444,7 +1478,7 @@ fun generateQrBitmap(text: String): Bitmap? {
 fun scanQrFromImage(
     context: android.content.Context,
     uri: Uri,
-    onResult: (String) -> Unit
+    onResult: (String, String) -> Unit
 ) {
 
     try {
@@ -1467,7 +1501,23 @@ fun scanQrFromImage(
 
                 if (!value.isNullOrBlank()) {
 
-                    onResult(value)
+                    val parsed = parseUpiQr(value)
+
+                    if (parsed != null) {
+
+                        onResult(
+                            parsed.first,
+                            parsed.second
+                        )
+
+                    } else {
+
+                        Toast.makeText(
+                            context,
+                            "Invalid UPI QR code",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
 
                 } else {
 
@@ -1494,5 +1544,34 @@ fun scanQrFromImage(
             "Unable to open image",
             Toast.LENGTH_SHORT
         ).show()
+    }
+}
+
+fun parseUpiQr(
+    raw: String
+): Pair<String, String>? {
+
+    return try {
+        val uri = Uri.parse(raw)
+
+        if (!uri.scheme.equals("upi", ignoreCase = true)) {
+            return null
+        }
+
+        val upiId = uri.getQueryParameter("pa")
+
+        if (upiId.isNullOrBlank()) {
+            return null
+        }
+
+        val amount = uri.getQueryParameter("am") ?: ""
+
+        Pair(
+            upiId,
+            amount
+        )
+
+    } catch (e: Exception) {
+        null
     }
 }
