@@ -73,7 +73,7 @@ import com.noinupi.domain.Actions
 import com.noinupi.domain.Transaction
 import com.noinupi.domain.TransactionStore
 import com.noinupi.platform.UssdEngine
-
+import androidx.compose.ui.res.painterResource
 import kotlinx.coroutines.launch
 
 
@@ -965,6 +965,22 @@ fun QrMenuScreen(
             text = "RECEIVE",
             onClick = onReceive
         )
+
+        Spacer(
+            modifier = Modifier.height(30.dp)
+        )
+
+        Image(
+            painter = painterResource(
+                id = R.drawable.qr_tv_man
+            ),
+            contentDescription = "QR TV Man",
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 20.dp)
+                .height(260.dp),
+            contentScale = ContentScale.Fit
+        )
     }
 }
 
@@ -1204,6 +1220,22 @@ fun ScannerScreen(
             onClick = {
                 launcher.launch("image/*")
             }
+        )
+
+        Spacer(
+            modifier = Modifier.height(30.dp)
+        )
+
+        Image(
+            painter = painterResource(
+                id = R.drawable.send_tv_man
+            ),
+            contentDescription = "Send TV Man",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(300.dp),
+
+            contentScale = ContentScale.Fit
         )
     }
 }
