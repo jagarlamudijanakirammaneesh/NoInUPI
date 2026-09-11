@@ -63,7 +63,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-
+import androidx.compose.ui.draw.clipToBounds
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.noinupi.app.R
@@ -827,7 +827,9 @@ fun PayScreen(
             }
 
             Canvas(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .clipToBounds()
             ) {
 
                 val spacing = 8f
@@ -847,7 +849,7 @@ fun PayScreen(
                             size.width,
                             y
                         ),
-                        strokeWidth = 1f
+                        strokeWidth = 5f
                     )
 
                     y += spacing

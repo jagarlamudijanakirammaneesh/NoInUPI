@@ -64,7 +64,7 @@ fun HistoryScreen(
             Text(
                 text = "TRANSACTION LOG",
                 color = HistoryAmber,
-                fontFamily = FontFamily.Monospace,
+                fontFamily = PixelFont,
                 fontSize = 14.sp,
                 letterSpacing = 2.sp
             )
@@ -96,7 +96,7 @@ fun HistoryScreen(
                 Text(
                     text = "TRANSACTION LOG IS EMPTY",
                     color = HistoryMuted,
-                    fontFamily = FontFamily.Monospace,
+                    fontFamily = PixelFont,
                     fontSize = 9.sp
                 )
             }
