@@ -35,11 +35,28 @@ Get Started
 
 1. Download the latest APK from the [Releases](../../releases) section and install it on your Android device
 
-2. Go to Android Accessibility Settings and enable NoInUPI.
+If Google Play Protect blocks the installation:
+Open the Play Store
+Tap your profile picture
+Select Play Protect
+Tap the gear icon
+Turn off Scan apps with Play Protect
+Install NoInUPI
 
-3. Dial *99# once to enable USSD banking.
+I swear your phone isn't gonna blow up. Google just really doesn't like indie devs who don't want to spend ₹3,000 on platform fees to publish a free app.
 
-4. You’re Ready, Use banking services without an internet connection.
+2. Enable Accessibility
+
+Open your phone's Settings
+Go to Additional Settings
+Tap Accessibility
+Find Downloaded Apps / Installed Apps
+Select NoInUPI
+Turn on the accessibility service
+
+3.Open your phones dialer and Dial *99# once to enable USSD banking Complete the setup if prompted.
+
+4. You’re Ready, You can now use NoInUPI's banking features without an internet connection.
 
 ## Tech Stack
 
