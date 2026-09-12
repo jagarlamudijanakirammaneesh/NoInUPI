@@ -58,6 +58,18 @@ Turn on the accessibility service
 
 4. You’re Ready, You can now use NoInUPI's banking features without an internet connection.
 
+Security
+
+NoInUPI does not handle or store your UPI PIN.
+Your UPI PIN is entered only through the bank/carrier USSD dialogue.
+NoInUPI never sees, reads, or stores the PIN.
+The PIN is not linked to or sent through the NoInUPI app.
+NoInUPI only handles the transaction details needed to start the banking flow, such as the UPI ID and amount.
+There is no backend or cloud server handling your UPI PIN.(i don't even know backend)
+
+
+Your PIN stays between you, your mobile network, and your bank's USSD system.
+
 ## Tech Stack
 
 - Kotlin
