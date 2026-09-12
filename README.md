@@ -54,7 +54,7 @@ Find Downloaded Apps / Installed Apps
 Select NoInUPI
 Turn on the accessibility service
 
-3.Open your phones dialer and Dial *99# once to enable USSD banking Complete the setup if prompted.
+3. Open your phones dialer and Dial *99# once to enable USSD banking Complete the setup if prompted.
 
 4. You’re Ready, You can now use NoInUPI's banking features without an internet connection.
 
