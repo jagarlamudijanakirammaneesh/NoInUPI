@@ -31,8 +31,19 @@ This release introduces the redesigned NoInUPI interface with:
 
 ## Installation
 
-Download the latest APK from the [Releases](../../releases) section and install it on your Android device and enable accessibility settings for the application
-To enable transaction dail *99# for USSD banking(this is only done once) and thats it you can now do banking without internet.
+Get Started
+
+1. Install
+Download the latest APK from the [Releases](../../releases) section and install it on your Android device
+
+2. Enable Access
+Go to Android Accessibility Settings and enable NoInUPI.
+
+3. Activate Banking
+Dial *99# once to enable USSD banking.
+
+4. You’re Ready
+Use banking services without an internet connection.
 
 ## Tech Stack
 
