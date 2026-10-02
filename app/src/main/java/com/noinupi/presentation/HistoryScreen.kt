@@ -2,6 +2,7 @@ package com.noinupi.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,7 +38,8 @@ private val HistoryMuted = Color(0xFF8C743C)
 @Composable
 fun HistoryScreen(
     transactions: List<Transaction>,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onTransactionClick: (Transaction) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -109,7 +111,12 @@ fun HistoryScreen(
             ) {
 
                 items(transactions) { transaction ->
-                    TransactionRow(transaction)
+                    TransactionRow(
+                        transaction = transaction,
+                        onClick = {
+                            onTransactionClick(transaction)
+                        }
+                    )
                 }
             }
         }
@@ -118,7 +125,8 @@ fun HistoryScreen(
 
 @Composable
 private fun TransactionRow(
-    transaction: Transaction
+    transaction: Transaction,
+    onClick: () -> Unit
 ) {
 
     val date = SimpleDateFormat(
@@ -135,8 +143,24 @@ private fun TransactionRow(
                 1.dp,
                 HistoryAmber
             )
+            .clickable {
+                onClick()
+            }
             .padding(14.dp)
     ) {
+
+        if (transaction.merchantName.isNotBlank()) {
+            Text(
+                text = transaction.merchantName,
+                color = HistoryBright,
+                fontFamily = FontFamily.Monospace,
+                fontSize = 11.sp
+            )
+
+            Spacer(
+                modifier = Modifier.height(5.dp)
+            )
+        }
 
         Text(
             text = "UPI ID",

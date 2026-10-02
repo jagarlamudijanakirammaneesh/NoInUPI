@@ -16,6 +16,7 @@ class TransactionStore(context: Context) {
 
         val obj = JSONObject().apply {
             put("upiId", transaction.upiId)
+            put("merchantName", transaction.merchantName)
             put("amount", transaction.amount)
             put("timestamp", transaction.timestamp)
             put("status", transaction.status)
@@ -41,6 +42,7 @@ class TransactionStore(context: Context) {
                     Transaction(
                         upiId = obj.getString("upiId"),
                         amount = obj.getString("amount"),
+                        merchantName = obj.optString("merchantName", ""),
                         timestamp = obj.getLong("timestamp"),
                         status = obj.getString("status")
                     )

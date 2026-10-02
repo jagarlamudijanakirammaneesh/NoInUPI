@@ -116,7 +116,12 @@ class MainActivity : ComponentActivity() {
 
     private var scannedUpi by mutableStateOf("")
     private var scannedAmount by mutableStateOf("")
+    private var scannedMerchant by mutableStateOf("")
     private var paymentResetKey by mutableStateOf(0)
+
+    // Payment screen navigation
+    private var page by mutableStateOf("home")
+    private var paymentStatus by mutableStateOf("Success")
 
     private val prefs by lazy {
         getSharedPreferences(
@@ -161,10 +166,6 @@ class MainActivity : ComponentActivity() {
                     color = TerminalBg
                 ) {
 
-                    var page by remember {
-                        mutableStateOf("home")
-                    }
-
                     when (page) {
 
                         "home" -> {
@@ -172,6 +173,7 @@ class MainActivity : ComponentActivity() {
                             PayScreen(
                                 scannedUpi = scannedUpi,
                                 scannedAmount = scannedAmount,
+                                scannedMerchant = scannedMerchant,
                                 paymentResetKey = paymentResetKey,
 
                                 savedBalance = currentBalance,
@@ -180,6 +182,7 @@ class MainActivity : ComponentActivity() {
                                     "receive_upi",
                                     ""
                                 ) ?: "",
+
                                 balanceTime = prefs.getLong(
                                     "balance_time",
                                     0L
@@ -238,9 +241,11 @@ class MainActivity : ComponentActivity() {
                                 onSend = {
                                     page = "scanner"
                                 },
+
                                 onReceive = {
                                     page = "receive"
                                 },
+
                                 onBack = {
                                     page = "home"
                                 }
@@ -273,10 +278,11 @@ class MainActivity : ComponentActivity() {
                         "scanner" -> {
 
                             ScannerScreen(
-                                onResult = { upi, amount ->
+                                onResult = { upi, amount, merchant ->
 
                                     scannedUpi = upi
                                     scannedAmount = amount
+                                    scannedMerchant = merchant
 
                                     UssdSessionStore.vpa = upi
                                     UssdSessionStore.amount = amount
@@ -295,6 +301,37 @@ class MainActivity : ComponentActivity() {
                             HistoryScreen(
                                 transactions = transactions,
                                 onBack = {
+                                    page = "home"
+                                },
+                                onTransactionClick = { transaction ->
+                                    scannedMerchant = transaction.merchantName
+                                    UssdSessionStore.vpa = transaction.upiId
+                                    UssdSessionStore.amount = transaction.amount
+                                    paymentStatus = transaction.status
+                                    page = "payment_status"
+                                }
+                            )
+                        }
+
+                        "payment_status" -> {
+
+                            PaymentStatusScreen(
+                                merchantName = scannedMerchant,
+                                upiId = UssdSessionStore.vpa,
+                                amount = UssdSessionStore.amount,
+                                status = paymentStatus,
+
+                                onDone = {
+
+                                    UssdSessionStore.vpa = ""
+                                    UssdSessionStore.amount = ""
+
+                                    scannedUpi = ""
+                                    scannedAmount = ""
+                                    scannedMerchant = ""
+
+                                    paymentResetKey++
+
                                     page = "home"
                                 }
                             )
@@ -361,11 +398,20 @@ class MainActivity : ComponentActivity() {
 
                         is ActionEvent.Error -> {
 
-                            Toast.makeText(
-                                this@MainActivity,
-                                event.message,
-                                Toast.LENGTH_LONG
-                            ).show()
+                            transactionStore.save(
+                                Transaction(
+                                    upiId = UssdSessionStore.vpa,
+                                    amount = UssdSessionStore.amount,
+                                    merchantName = scannedMerchant,
+                                    timestamp = System.currentTimeMillis(),
+                                    status = "Failed"
+                                )
+                            )
+
+                            transactions = transactionStore.getAll()
+
+                            paymentStatus = "Failed"
+                            page = "payment_status"
                         }
 
                         is ActionEvent.Done -> {
@@ -374,6 +420,7 @@ class MainActivity : ComponentActivity() {
                                 Transaction(
                                     upiId = UssdSessionStore.vpa,
                                     amount = UssdSessionStore.amount,
+                                    merchantName = scannedMerchant,
                                     timestamp = System.currentTimeMillis(),
                                     status = "Success"
                                 )
@@ -381,20 +428,9 @@ class MainActivity : ComponentActivity() {
 
                             transactions = transactionStore.getAll()
 
-                            UssdSessionStore.vpa = ""
-                            UssdSessionStore.amount = ""
-
-                            scannedUpi = ""
-                            scannedAmount = ""
-                            paymentResetKey++
-
-
-
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Payment complete",
-                                Toast.LENGTH_LONG
-                            ).show()
+                            // Open payment status screen.
+                            // Do NOT clear payment data yet.
+                            page = "payment_status"
                         }
 
                         else -> Unit
@@ -554,6 +590,7 @@ object UssdSessionStore {
 fun PayScreen(
     scannedUpi: String,
     scannedAmount: String,
+    scannedMerchant: String,
     paymentResetKey: Int,
     savedBalance: String?,
     savedReceiveUpi: String,
@@ -624,7 +661,11 @@ fun PayScreen(
         )
 
         Text(
-            text = "UPI ID",
+            text = if (scannedMerchant.isNotBlank()) {
+                "$scannedMerchant    UPI ID"
+            } else {
+                "UPI ID"
+            },
             color = TerminalMuted,
             fontFamily = PixelFont,
             fontSize = 7.sp
@@ -752,7 +793,6 @@ fun PayScreen(
                 .height(210.dp)
         ) {
 
-            // Exact balance display image.
             Image(
                 painter = androidx.compose.ui.res.painterResource(
                     id = R.drawable.balance_display
@@ -762,7 +802,6 @@ fun PayScreen(
                 contentScale = ContentScale.FillBounds
             )
 
-            // Dynamic balance + last checked text.
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -802,7 +841,6 @@ fun PayScreen(
                     fontSize = 6.sp
                 )
             }
-
 
             // ====================================================
             // SUBTLE CRT SCANLINES
@@ -856,7 +894,6 @@ fun PayScreen(
                 }
             }
         }
-
 
         Spacer(
             modifier = Modifier.height(10.dp)
@@ -1116,7 +1153,7 @@ fun ReceiveScreen(
 
 @Composable
 fun ScannerScreen(
-    onResult: (String, String) -> Unit,
+    onResult: (String, String, String) -> Unit,
     onBack: () -> Unit
 ) {
 
@@ -1136,11 +1173,12 @@ fun ScannerScreen(
                 scanQrFromImage(
                     context,
                     uri
-                ) { upi, amount ->
+                ) { upi, amount, merchant ->
 
                     onResult(
                         upi,
-                        amount
+                        amount,
+                        merchant
                     )
                 }
             }
@@ -1153,15 +1191,17 @@ fun ScannerScreen(
     if (showCamera) {
 
         CameraScannerScreen(
-            onResult = { upi, amount ->
+            onResult = { upi, amount, merchant ->
 
                 showCamera = false
 
                 onResult(
                     upi,
-                    amount
+                    amount,
+                    merchant
                 )
             },
+
             onBack = {
                 showCamera = false
             }
@@ -1234,7 +1274,6 @@ fun ScannerScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(300.dp),
-
             contentScale = ContentScale.Fit
         )
     }
@@ -1247,7 +1286,7 @@ fun ScannerScreen(
 
 @Composable
 fun CameraScannerScreen(
-    onResult: (String, String) -> Unit,
+    onResult: (String, String, String) -> Unit,
     onBack: () -> Unit
 ) {
 
@@ -1398,7 +1437,8 @@ fun CameraScannerScreen(
 
                                         onResult(
                                             parsed.first,
-                                            parsed.second
+                                            parsed.second,
+                                            parsed.third
                                         )
                                     }
                                 }
@@ -1512,7 +1552,7 @@ fun generateQrBitmap(text: String): Bitmap? {
 fun scanQrFromImage(
     context: android.content.Context,
     uri: Uri,
-    onResult: (String, String) -> Unit
+    onResult: (String, String, String) -> Unit
 ) {
 
     try {
@@ -1541,7 +1581,8 @@ fun scanQrFromImage(
 
                         onResult(
                             parsed.first,
-                            parsed.second
+                            parsed.second,
+                            parsed.third
                         )
 
                     } else {
@@ -1583,7 +1624,7 @@ fun scanQrFromImage(
 
 fun parseUpiQr(
     raw: String
-): Pair<String, String>? {
+): Triple<String, String, String>? {
 
     return try {
         val uri = Uri.parse(raw)
@@ -1599,10 +1640,12 @@ fun parseUpiQr(
         }
 
         val amount = uri.getQueryParameter("am") ?: ""
+        val merchantName = uri.getQueryParameter("pn") ?: ""
 
-        Pair(
+        Triple(
             upiId,
-            amount
+            amount,
+            merchantName
         )
 
     } catch (e: Exception) {
