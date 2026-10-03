@@ -1,33 +1,28 @@
 # NoInUPI
 
-> A retro-styled offline UPI payment terminal for Android.
+NoInUPI is designed to work without mobile data or Wi-Fi.
 
-NoInUPI is an Android app built around one simple idea: enabling UPI transactions without relying on an internet connection, wrapped in a lightweight old-school digital terminal interface.
+NoInUPI is an Android app built around one simple idea: enabling UPI transactions without relying on an internet connection. It uses your phone’s cellular network and USSD banking infrastructure, so you can make payments even with a single bar of signal, without mobile data, Wi-Fi, or even an active recharge pack, as long as your SIM is still active.
 
 ## Features
 
-- UPI payment flow
-- QR code scanning
-- QR code image upload
-- Receive QR generation
-- Saved UPI ID
-- Balance checking and persistence
-- Transaction history
-- Retro CRT/terminal-inspired interface
-- Custom pixel-style branding
+### Features
 
-## Release 1.67
+* No internet required
+* No mobile data or Wi-Fi
+* Works with weak signal
+* No recharge required
+* USSD-based payments
+* Scan QR & Pay
+* Import QR from image
+* Receive money via QR
+* Transaction history
+* Balance tracking
+* Save UPI IDs
+* No backend
+* Privacy-focused
+* Retro terminal UI
 
-This release introduces the redesigned NoInUPI interface with:
-
-- New terminal-style UI
-- Updated NoInUPI branding
-- QR Terminal
-- Send / Receive QR workflows
-- Improved payment flow
-- Persistent balance
-- Transaction log
-- New app icon
 
 ## Installation
 
