@@ -27,10 +27,41 @@ NoInUPI streamlines this process with a simple interface. Scan a QR code, enter 
 - **Local storage** — Keep transaction records on your device without a cloud database or a server and not even backend.
 - **Clean retro UI** — A minimal, retro-inspired interface.
 
-<img width="1080" height="2284" alt="IMG_20261019_004053(1)" src="https://github.com/user-attachments/assets/a0a0f1e1-a0ed-4f09-848e-9307fbd70e24" />
-<img width="1080" height="2285" alt="IMG_20261019_004002" src="https://github.com/user-attachments/assets/66823d3b-d183-49b4-956a-2fd9b491c69a" />
-<img width="1080" height="2288" alt="IMG_20261019_003923" src="https://github.com/user-attachments/assets/c2fd3010-6be5-4e29-bccf-059f77c5c721" />
-<img width="1080" height="2288" alt="IMG_20261019_003934" src="https://github.com/user-attachments/assets/60f985dc-9142-4421-a6ea-1dfbe5687f27" />
-<img width="1080" height="2289" alt="IMG_20261019_004046(1)" src="https://github.com/user-attachments/assets/f1d9692a-3814-48e1-82ab-41be2d448567" />
-<img width="1080" height="2281" alt="IMG_20261019_003352(1)" src="https://github.com/user-attachments/assets/ad799f19-b972-4872-adde-5eb131521d4d" />
+## Screenshots
 
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/60f985dc-9142-4421-a6ea-1dfbe5687f27" width="180" alt="Screenshot 1">
+      <br>
+      <sub>Payment interface</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/c2fd3010-6be5-4e29-bccf-059f77c5c721" width="180" alt="Screenshot 2">
+      <br>
+      <sub>Receive payments</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/66823d3b-d183-49b4-956a-2fd9b491c69a" width="180" alt="Screenshot 3">
+      <br>
+      <sub>Transaction history</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/a0a0f1e1-a0ed-4f09-848e-9307fbd70e24" width="180" alt="Screenshot 4">
+      <br>
+      <sub>Home screen</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/66823d3b-d183-49b4-956a-2fd9b491c69a" width="180" alt="Screenshot 5">
+      <br>
+      <sub>USSD banking</sub>
+    </td>
+    <td align="center">
+      <img src="https://github.com/user-attachments/assets/f1d9692a-3814-48e1-82ab-41be2d448567" width="180" alt="Screenshot 6">
+      <br>
+      <sub>Payment details</sub>
+    </td>
+  </tr>
+</table>
