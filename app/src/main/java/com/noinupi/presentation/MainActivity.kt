@@ -1,6 +1,8 @@
 package com.noinupi.presentation
 
 import android.Manifest
+import android.content.Intent
+import android.provider.Settings
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
@@ -157,6 +159,12 @@ class MainActivity : ComponentActivity() {
 
         currentBalance = prefs.getString("balance", null)
 
+        page = if (prefs.getBoolean("onboarding_complete", false)) {
+            "home"
+        } else {
+            "onboarding_banking"
+        }
+
         setContent {
 
             MaterialTheme {
@@ -167,6 +175,40 @@ class MainActivity : ComponentActivity() {
                 ) {
 
                     when (page) {
+
+                        "onboarding_banking" -> {
+                            BankingSetupScreen(
+                                onNext = {
+                                    page = "onboarding_accessibility"
+                                }
+                            )
+                        }
+
+                        "onboarding_accessibility" -> {
+                            AccessibilitySetupScreen(
+                                onGrant = {
+                                    startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS))
+                                },
+                                onContinue = {
+                                    prefs.edit().putBoolean("onboarding_complete", true).apply()
+                                    page = "home"
+                                },
+                                onBack = {
+                                    page = "onboarding_banking"
+                                },
+                                onRestrictedAccess = {
+                                    page = "onboarding_restricted"
+                                }
+                            )
+                        }
+
+                        "onboarding_restricted" -> {
+                            RestrictedAccessScreen(
+                                onBack = {
+                                    page = "onboarding_accessibility"
+                                }
+                            )
+                        }
 
                         "home" -> {
 
