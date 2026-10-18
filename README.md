@@ -111,7 +111,7 @@ If Android displays a **Restricted setting** warning:
 
 Open the app and follow the on-screen instructions.
 
-MMake sure you have:
+Make sure you have:
 - An active SIM with cellular signal.
 - A bank account linked to your mobile number.
 - A bank that supports the required USSD banking services.
