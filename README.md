@@ -29,35 +29,33 @@ NoInUPI streamlines this process with a simple interface. Scan a QR code, enter 
 
 ## Screenshots
 
-<td align="center">
-  <img src="IMG_20261019_003352(2).jpg" width="180" alt="Home screen">
-  <br><sub>Home screen — Make payments &amp; check balance</sub>
-</td>
-
 <table>
   <tr>
     <td align="center">
+      <img src="IMG_20261019_003352(2).jpg" width="180" alt="Home screen">
+      <br><sub>Home — Payments & Balance</sub>
+    </td>
+    <td align="center">
       <img src="https://github.com/user-attachments/assets/60f985dc-9142-4421-a6ea-1dfbe5687f27" width="180" alt="Payment successful">
-      <br><sub>Payment successful</sub>
+      <br><sub>Payment Successful</sub>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/c2fd3010-6be5-4e29-bccf-059f77c5c721" width="180" alt="Payment failed">
-      <br><sub>Payment failed</sub>
-    </td>
-    <td align="center">
-      <img src="https://github.com/user-attachments/assets/66823d3b-d183-49b4-956a-2fd9b491c69a" width="180" alt="Transaction history">
-      <br><sub>Transaction history</sub>
+      <br><sub>Payment Failed</sub>
     </td>
   </tr>
   <tr>
     <td align="center">
+      <img src="https://github.com/user-attachments/assets/66823d3b-d183-49b4-956a-2fd9b491c69a" width="180" alt="Transaction history">
+      <br><sub>Transaction History</sub>
+    </td>
+    <td align="center">
       <img src="https://github.com/user-attachments/assets/a0a0f1e1-a0ed-4f09-848e-9307fbd70e24" width="180" alt="Receive payments">
-      <br><sub>Receive payments</sub>
+      <br><sub>Receive Payments</sub>
     </td>
     <td align="center">
       <img src="https://github.com/user-attachments/assets/f1d9692a-3814-48e1-82ab-41be2d448567" width="180" alt="QR menu">
-      <br><sub>QR menu</sub>
+      <br><sub>QR Menu</sub>
     </td>
-    <td></td>
   </tr>
 </table>
