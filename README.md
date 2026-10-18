@@ -59,3 +59,58 @@ NoInUPI streamlines this process with a simple interface. Scan a QR code, enter 
     </td>
   </tr>
 </table>
+
+## Privacy
+
+NoInUPI has no backend or cloud storage.
+Your transaction history stays on your device.
+Your UPI PIN is never entered or handled by NoInUPI's automation. Automation stops at the UPI PIN entry step, and you enter your PIN directly into the bank's caller dialog yourself.
+
+## Carrier Compatibility
+
+Works with every major SIM provider except Jio, which somehow managed to replace a perfectly fine, decades-old system with something worse.
+
+## Setup & Installation
+
+### 1. Prepare your bank account
+
+Make sure your bank account is linked to your mobile number and supports `*99#` USSD banking.
+
+### 2. Install NoInUPI
+
+1. Download the latest APK from [GitHub Releases](https://github.com/jagarlamudijanakirammaneesh/NoInUPI/releases).
+2. Open the downloaded APK.
+3. Allow installation from unknown sources if prompted.
+4. Follow the installation instructions.
+
+#### If the app is not installed, disable Play Protect
+
+If Google Play Protect blocks the installation:
+
+1. Open the **Google Play Store**.
+2. Tap your profile icon → **Play Protect**.
+3. Tap the settings gear icon.
+4. Temporarily turn off **Scan apps with Play Protect**.
+5. Try installing NoInUPI again.
+
+### 3. Enable permissions
+
+Follow the in-app instructions to grant the required Phone and Accessibility permissions.
+
+If Android displays a **Restricted setting** warning:
+
+1. Open **Settings → Apps → NoInUPI**.
+2. Tap the three-dot menu.
+3. Select **Allow restricted settings** and confirm.
+4. Return to **Settings → Accessibility** and enable NoInUPI.
+
+*Menu names may vary by device.*
+
+### 4. Start using NoInUPI
+
+Open the app and follow the on-screen instructions.
+
+Make sure you have:
+- An active SIM with cellular signal.
+- A bank account linked to your mobile number.
+- A bank that supports the required USSD banking services.
