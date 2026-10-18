@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/jagarlamudijanakirammaneesh/NoInUPI/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" width="64" alt="NoInUPI">
+  <img src="https://raw.githubusercontent.com/jagarlamudijanakirammaneesh/NoInUPI/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.webp" width="96" alt="NoInUPI">
 </p>
 
 <h1 align="center">NoInUPI</h1>
