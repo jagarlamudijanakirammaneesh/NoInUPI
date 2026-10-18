@@ -74,8 +74,9 @@ Works with every major SIM provider except Jio, which somehow managed to replace
 
 ### 1. Prepare your bank account
 
-Make sure your bank account is linked to your mobile number and supports `*99#` USSD banking.
-
+1. Open your phone's dialer and dial `*99#`.
+2. Follow the on-screen instructions to select your bank and access its supported services duhhhh its the banks job not mine .
+   
 ### 2. Install NoInUPI
 
 1. Download the latest APK from [GitHub Releases](https://github.com/jagarlamudijanakirammaneesh/NoInUPI/releases).
@@ -110,11 +111,17 @@ If Android displays a **Restricted setting** warning:
 
 Open the app and follow the on-screen instructions.
 
-Make sure you have:
+MMake sure you have:
 - An active SIM with cellular signal.
 - A bank account linked to your mobile number.
 - A bank that supports the required USSD banking services.
+- A cute patient little brain, and a willingness to figure things out.
 
+If any of you cutie sapotas try out my app, I'd be very thankful.
+
+Anyways, stay cool, be kind, and touch grasssss.
+
+Byeeeeeeeeeeeeeeeeeeeeeeeeeeee!
 ---
 
 **Built by Ram. Tested by Ram. Five stars from Ram.**
