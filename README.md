@@ -5,6 +5,6 @@
 <h1 align="center">NoInUPI</h1>
 
 <p align="center">
-  Offline UPI payments through USSD banking.<br>
-  No internet, no backend, no cloud. Banks doing bank things.
+  Offline UPI through USSD. No internet, no recharge, no Wi-Fi.<br>
+  Just a working SIM and a single bar of signal. Banks doing bank things.
 </p>
