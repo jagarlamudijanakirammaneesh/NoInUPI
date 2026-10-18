@@ -29,6 +29,11 @@ NoInUPI streamlines this process with a simple interface. Scan a QR code, enter 
 
 ## Screenshots
 
+<td align="center">
+  <img src="IMG_20261019_003352(2).jpg" width="180" alt="Home screen">
+  <br><sub>Home screen — Make payments &amp; check balance</sub>
+</td>
+
 <table>
   <tr>
     <td align="center">
