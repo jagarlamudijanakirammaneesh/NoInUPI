@@ -114,3 +114,7 @@ Make sure you have:
 - An active SIM with cellular signal.
 - A bank account linked to your mobile number.
 - A bank that supports the required USSD banking services.
+
+---
+
+**Built by Ram. Tested by Ram. Five stars from Ram.**
